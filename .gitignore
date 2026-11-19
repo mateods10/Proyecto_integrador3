@@ -1,0 +1,10 @@
+cmake-build-*/
+build/
+.idea/
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.exe
+*.obj
+*.o

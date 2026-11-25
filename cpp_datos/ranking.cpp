@@ -1,27 +1,13 @@
-// Permite mostrar mensajes en pantalla mediante cout.
 #include <iostream>
-
 // Permite abrir y leer archivos mediante ifstream.
 #include <fstream>
-
-// Permite utilizar variables de texto de tipo string.
 #include <string>
-
 // Permite leer por partes el texto de una linea.
 #include <sstream>
-
-// Permite utilizar exception para capturar errores.
 #include <exception>
-
 // Permite utilizar size_t para tamaños y posiciones.
 #include <cstddef>
-
-// Incluye las estructuras Partida, Jugador,
-// NodoPartida y NodoJugador definidas en nuestro proyecto.
 #include "nodo.h"
-
-// Permite escribir cout, string, ifstream, etc.,
-// sin colocar std:: delante.
 using namespace std;
 
 
@@ -29,7 +15,6 @@ using namespace std;
 // MOSTRAR EL HISTORIAL
 // Recibe un puntero al primer nodo de la lista de partidas.
 // Recorre la lista y muestra los datos de cada partida.
-// void significa que la funcion no devuelve un valor.
 // ============================================================
 void mostrarHistorial(NodoPartida* head) {
 
@@ -38,7 +23,6 @@ void mostrarHistorial(NodoPartida* head) {
     // Asi conservamos el puntero de inicio.
     NodoPartida* actual = head;
 
-    // \n agrega un salto de linea.
     cout << "\nHistorial de partidas:\n";
 
     // Mientras actual apunte a un nodo, seguimos recorriendo.
@@ -49,15 +33,13 @@ void mostrarHistorial(NodoPartida* head) {
         // al que apunta actual.
         //
         // actual->datos contiene una estructura Partida.
-        // Por eso usamos . para acceder a sus campos.
         cout << "Partida " << actual->datos.id_partida << ": "
              << actual->datos.j1 << " "
              << actual->datos.puntaje1 << " - "
              << actual->datos.j2 << " "
              << actual->datos.puntaje2 << "\n";
 
-        // Avanzamos al siguiente nodo.
-        // Sin este avance, repetiriamos siempre la misma partida.
+        // Avanzamos al siguiente nodo. para no repetir la misma partida siempre
         actual = actual->siguiente;
     }
 }
@@ -566,5 +548,5 @@ void leerArchivo() {
         delete borrar;
     }
 
-    // Al terminar la funcion, archivo se cierra automaticamente.
+    // fin
 }

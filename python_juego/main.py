@@ -6,6 +6,8 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 import os
+import shutil
+import tempfile
 
 pygame.init()
 
@@ -59,7 +61,7 @@ tiempo_restante = duracion
 terminado = False
 
 boton_reiniciar = pygame.Rect(370, 540, 300, 70)
-
+boton_score = pygame.Rect(370, 630, 300, 70)
 # Tablero de 12 filas y 16 columnas
 mapa = [
     "0000000000000000",
@@ -305,6 +307,32 @@ def ejecutar_ranking():
         print(f"No se pudo ejecutar el ranking: {error}")
 
 
+def abrir_score():
+    ruta_csv = (
+            Path(__file__).resolve().parent.parent
+            / "data"
+            / "historial.csv"
+    )
+
+    if not ruta_csv.is_file():
+        print("Todavia no hay un historial guardado.")
+        return
+
+    try:
+        # Crear una carpeta temporal para esta consulta
+        carpeta_temporal = Path(
+            tempfile.mkdtemp(prefix="color_battle_score_")
+        )
+
+        # Copiar los resultados actuales
+        copia_csv = carpeta_temporal / "historial_consulta.csv"
+        shutil.copy2(ruta_csv, copia_csv)
+
+        # Abrir la copia con Excel u otra aplicacion asociada
+        os.startfile(str(copia_csv))
+
+    except OSError as error:
+        print(f"No se pudo abrir el historial: {error}")
 # Bucle principal del juego
 while True:
     for event in pygame.event.get():
@@ -319,6 +347,13 @@ while True:
             if event.key == pygame.K_RETURN:
                 velocidad_giro2 = -velocidad_giro2
 
+        if (
+            event.type == pygame.MOUSEBUTTONDOWN
+            and event.button == 1
+            and terminado
+            and boton_score.collidepoint(event.pos)
+        ):
+            abrir_score()
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1 and terminado:
                 if boton_reiniciar.collidepoint(event.pos):
@@ -682,5 +717,24 @@ while True:
                 center=boton_reiniciar.center
             )
         )
+        # Dibujar el boton SCORE
+        pygame.draw.rect(
+            screen,
+            (40, 30, 100),
+            boton_score,
+            border_radius=15
+        )
 
+        # Crear el texto
+        texto_score = fuente.render(
+            "SCORE",
+            True,
+            (255, 255, 255)
+        )
+
+        # Centrar el texto dentro del boton
+        screen.blit(
+            texto_score,
+            texto_score.get_rect(center=boton_score.center)
+        )
     pygame.display.update()
